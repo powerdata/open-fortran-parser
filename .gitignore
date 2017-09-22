@@ -20,3 +20,4 @@ build/*.jar
 *.la
 *.a
 /bin/
+*.swp

@@ -49,10 +49,11 @@ public class FrontEnd implements Callable<Boolean> {
    private int sourceForm;
    private boolean verbose = false;
    private static boolean hasErrorOccurred = false;
-   private static ArrayList<String> includeDirs;
+   private ArrayList<String> includeDirs;
 
-   public FrontEnd(String[] args, String filename, String type)
+   public FrontEnd(ArrayList<String> includeDirs, String[] args, String filename, String type)
    throws IOException {
+	   this.includeDirs = includeDirs;
       boolean riceCAF = false;
       boolean lanlExtensions = false;
       
@@ -234,7 +235,7 @@ public class FrontEnd implements Callable<Boolean> {
       boolean rice_caf = false;
       boolean lanl_extensions = false;
 
-      includeDirs = new ArrayList<String>();
+      ArrayList<String> includeDirs = new ArrayList<String>();
 
       // Get the arguments. Use --silent --verbose, and --dump as shorthand
       // so we don't have to specify explicit class names on the command line.
@@ -331,7 +332,7 @@ public class FrontEnd implements Callable<Boolean> {
             error = new Boolean(true);
          } else {
             includeDirs.add(srcFile.getParent());
-            FrontEnd ofp = new FrontEnd(newArgs.toArray(new String[newArgs.size()]), args[i], type);
+            FrontEnd ofp = new FrontEnd(includeDirs, newArgs.toArray(new String[newArgs.size()]), args[i], type);
             ofp.setVerbose(verbose, silent);
             if (ofp.getParser().getAction().getClass().getName() == "fortran.ofp.parser.java.FortranParserActionPrint") {
                FortranParserActionPrint action = (FortranParserActionPrint) ofp.getParser().getAction();
